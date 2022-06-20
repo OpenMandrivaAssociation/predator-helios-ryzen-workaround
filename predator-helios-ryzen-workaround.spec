@@ -1,7 +1,7 @@
 Summary:	Workaround for a BIOS Bug in Acer Predator Helios 500 Ryzen laptops
 Name:		predator-helios-ryzen-workaround
 Version:	1.0
-Release:	1
+Release:	2
 Source0:	https://raw.githubusercontent.com/pastaq/Acer-Ryzen-Helios-AC-Fix/master/acfix.service
 Source1:	https://raw.githubusercontent.com/pastaq/Acer-Ryzen-Helios-AC-Fix/master/acfix.sh
 ExclusiveArch:	%{x86_64}
@@ -19,9 +19,9 @@ Helios 500 with a Ryzen CPU and Vega GPU.
 %build
 
 %install
-mkdir -p %{buildroot}%{_sbindir} %{buildroot}/lib/systemd/system
+mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_unitdir}
 install -c -m 755 %{S:1} %{buildroot}%{_sbindir}/%{name}
-sed -e 's,/usr/local/sbin/acfix.sh,%{_sbindir}/%{name},g' %{S:0} >%{buildroot}/lib/systemd/system/%{name}.service
+sed -e 's,/usr/local/sbin/acfix.sh,%{_sbindir}/%{name},g' %{S:0} >%{buildroot}%{_unitdir}/%{name}.service
 
 %post
 %systemd_post %{name}
@@ -31,4 +31,4 @@ sed -e 's,/usr/local/sbin/acfix.sh,%{_sbindir}/%{name},g' %{S:0} >%{buildroot}/l
 
 %files
 %{_sbindir}/%{name}
-/lib/systemd/system/%{name}.service
+%{_unitdir}/%{name}.service
